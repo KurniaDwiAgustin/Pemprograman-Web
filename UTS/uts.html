@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Mahasiswa</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 { text-align: center; }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 300px;
+    }
+
+    input, select, textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      background: #d00cde;
+      color: white;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px;
+      text-align: left;
+    }
+
+    th {
+      background: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Form Input Data -->
+    <div class="card">
+      <form id="myForm">
+        <h4>INPUT DATA MAHASISWA</h4>
+        <label>NAMA:</label>
+        <input type="text" id="nama" required>
+
+        <label>NIM:</label>
+        <input type="text" id="nim" required>
+
+        <label>SEMESTER:</label>
+        <select id="semester">
+          <option value="1">Semester 1</option>
+          <option value="2">Semester 2</option>
+          <option value="3">Semester 3</option>
+          <option value="4">Semester 4</option>
+          <option value="5">Semester 5</option>
+          <option value="6">Semester 6</option>
+          <option value="7">Semester 7</option>
+          <option value="8">Semester 8</option>
+        </select>
+
+        <label>PROGRAM STUDI:</label>
+        <select id="program_studi">
+          <option value="Teknik Informatika">Teknik Informatika</option>
+          <option value="Teknik Sipil">Teknik Sipil</option>
+          <option value="Teknik Mesin">Teknik Mesin</option>
+          <option value="Teknik Geologi">Teknik Geologi</option>
+        </select>
+
+        <label>EMAIL:</label>
+        <input type="email" id="email" required>
+
+        <button type="button" onclick="tambahData()">Kirim Data</button>
+      </form>
+    </div>
+
+    <!-- Kotak Info -->
+    <div class="card info">
+      <h4>INFORMASI PENGIRIMAN</h4>
+      <ul>
+        <li>Data ditampilkan di console</li>
+        <li>Data disimpan dalam array</li>
+        <li>Jumlah data diupdate</li>
+        <li>Form akan kosong kembali</li>
+      </ul>
+    </div>
+
+  <!-- Tabel Data -->
+  <div class="card" style="margin: 30px auto; max-width: 800px;">
+    <table id="tabel">
+      <h4>TABLE MAHASISWA</h4>
+      <thead>
+        <tr>
+          <th>NO</th>
+          <th>NAMA</th>
+          <th>NIM</th>
+          <th>EMAIL</th>
+          <th>PROGRAM STUDI</th>
+          <th>SEMESTER</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    let data = [];
+
+    function tambahData() {
+      const nama = document.getElementById("nama").value.trim();
+      const nim = document.getElementById("nim").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const program_studi = document.getElementById("program_studi").value;
+      const semester = document.getElementById("semester").value;
+
+      if (!nama || !nim || !email) {
+        alert("Semua wajib diisi!");
+        return;
+      }
+
+      data.push({ nama, nim, email, program_studi, semester });
+      tampilkanData();
+      logConsole(`Tambah data: ${nama}`);
+      document.getElementById("myForm").reset();
+    }
+
+    function hapusData(index) {
+      logConsole(`Hapus data: ${data[index].nama}`);
+      data.splice(index, 1);
+      tampilkanData();
+    }
+
+    function tampilkanData() {
+      const tbody = document.querySelector("#tabel tbody");
+      tbody.innerHTML = "";
+      data.forEach((item, i) => {
+        const row = `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${item.nama}</td>
+            <td>${item.nim}</td>
+            <td>${item.email}</td>
+            <td>${item.program_studi}</td>
+            <td>${item.semester}</td>
+            <td><button onclick="hapusData(${i})">Hapus</button></td>
+          </tr>`;
+        tbody.innerHTML += row;
+      });
+      document.getElementById("total").textContent = data.length;
+    }
+  </script>
+
+</body>
+</html>
